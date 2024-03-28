@@ -55,16 +55,6 @@
             tailsButton.style.display = 'block';
         }
 
-        function attackBtnDisable(){
-            var btn = document.getElementById("attack");
-            btn.disabled = false;
-        }
-
-        function defendBtnDisable(){
-            var btn = document.getElementById("defend");
-            btn.disabled = false;
-        }
-
         function tossCoinHeads() { //executes when the user chooses heads
             var attackBtn = document.getElementById("attack");
             var defendBtn = document.getElementById("defend")
@@ -74,13 +64,17 @@
             if (coin == 0) {
                 alert("Coin is head. You chose head!");
                 attackBtn.disabled = false;
+                attackBtn.style.backgroundColor = "#FF8FA3";
                 defendBtn.disabled = true;
+                defendBtn.style.backgroundColor = "#F8BDC7";
             }
             else {
                 alert("Coin is  tail. You chose head!");
                 attackBtn.disabled = false;
+                attackBtn.style.backgroundColor = "#FF8FA3";               
                 defendBtn.disabled = false;
-            }
+                attackBtn.style.backgroundColor = "#FF8FA3";
+                }
             var headBtn = document.getElementById("head");
             var tailBtn = document.getElementById("tail");
 
@@ -98,12 +92,16 @@
             if (coin == 0) {
                 alert("Coin is head. You chose tails!");
                 attackBtn.disabled = false;
+                attackBtn.style.backgroundColor = "#FF8FA3";               
                 defendBtn.disabled = false;
+                attackBtn.style.backgroundColor = "#FF8FA3";
             }
             else {
                 alert("Coin is  tail. You chose tail!");
                 attackBtn.disabled = false;
+                attackBtn.style.backgroundColor = "#FF8FA3";
                 defendBtn.disabled = true;
+                defendBtn.style.backgroundColor = "#FF8FA3";
             }
 
             headBtn.disabled = true;
