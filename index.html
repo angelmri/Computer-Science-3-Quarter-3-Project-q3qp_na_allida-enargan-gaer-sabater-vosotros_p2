@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="wholeGame"> <!--container-->
+        <header>
+            <img id="heart" src="media/player1.png">
+            <div class="p1HP">  <!--item1-->
+            <p id = "playerHealth"></p>
+            </div class="header">
+
+                <div id="actions"> 
+                    <div id="action1"></div>
+                    <div id="action2"></div>
+                    <div id="action3"></div>
+                    <div id="output"></div>
+                </div>
+            <div class="p2HP"> <!--item2-->
+            <p id = "opponentHealth"></p>
+            </div>
+            <img id="heart" src="media/player2.png">
+            </div>
+
+        </header>
+        <div class="people">
+            <img id="defaultp1" src="media/player1-default.png" alt="">
+            <img id="defaultp2" src="media/player2-default.png" alt="">
+        </div>
+
+    <div class="allBtn">  <!--item 6-->
+        <button id="coin" onclick="toggleDropdown()">FLIP</button>
+        <button id="attack" onclick="playerAttack(); defendBtnDisable()" disabled>ATTACK</button>
+        <button id="defend" onclick="playerDefend(); attackBtnDisable()" disabled>DEFEND</button>
+        <button id="reset" onclick="reset()">RESET</button>
+
+        <p id="head" onclick="tossCoinHeads()">HEAD</button>
+        <p id="tail" onclick="tossCoinTails()">TAIL</button>
+    </div>
+    <script>
+        const coinButton = document.getElementById('coin');
+        const headsButton = document.getElementById('head');
+        const tailsButton = document.getElementById('tail');
+
+         // hide the heads and tails buttons at first
+        headsButton.style.display = 'none';
+        tailsButton.style.display = 'none';
+
+        function toggleDropdown() {
+             // toggle the display of the heads and tails buttons
+            headsButton.style.display = 'block';
+            tailsButton.style.display = 'block';
+        }
+
+        function attackBtnDisable(){
+            var btn = document.getElementById("attack");
+            btn.disabled = false;
+        }
+
+        function defendBtnDisable(){
+            var btn = document.getElementById("defend");
+            btn.disabled = false;
+        }
+
+        function tossCoinHeads() { //executes when the user chooses heads
+            var attackBtn = document.getElementById("attack");
+            var defendBtn = document.getElementById("defend")
+            var headBtn = document.getElementById("head");
+            var tailBtn = document.getElementById("tail");
+            var coin = Math.round(Math.random());
+            if (coin == 0) {
+                alert("Coin is head. You chose head!");
+                attackBtn.disabled = false;
+                defendBtn.disabled = true;
+            }
+            else {
+                alert("Coin is  tail. You chose head!");
+                attackBtn.disabled = false;
+                defendBtn.disabled = false;
+            }
+            var headBtn = document.getElementById("head");
+            var tailBtn = document.getElementById("tail");
+
+            headBtn.disabled = true;
+            tailBtn.disabled = true;
+        }
+
+        function tossCoinTails() { //function does a coin toss if the user chooses tails
+            var attackBtn = document.getElementById("attack");
+            var defendBtn = document.getElementById("defend");
+            var headBtn = document.getElementById("head");
+            var tailBtn = document.getElementById("tail");
+            var coin = Math.random();
+            coin = Math.round(coin);
+            if (coin == 0) {
+                alert("Coin is head. You chose tails!");
+                attackBtn.disabled = false;
+                defendBtn.disabled = false;
+            }
+            else {
+                alert("Coin is  tail. You chose tail!");
+                attackBtn.disabled = false;
+                defendBtn.disabled = true;
+            }
+
+            headBtn.disabled = true;
+            tailBtn.disabled = true;
+        }
+
+        let playerHealth = 100; //sets the initial health of the player
+        let opponentHealth = 100; //sets the initial health of the opponent
+        let playerDamage = 0; //sets the initial damage done by the player
+        let opponentDamage = 0; //sets the initial damage done by the computer
+
+        document.getElementById("playerHealth").innerHTML = "Player HP: " + playerHealth; 
+        document.getElementById("opponentHealth").innerHTML = "Opponent HP: " + opponentHealth;
+            
+        function calculateDamage() { //calculates the damage done by either the player or the opponent
+            return Math.floor((Math.random() * 5) + 1);
+        }
+
+        function checkHealth()  { // checks the player's and opponent's health to declare either a win or loss
+            if(playerHealth <= 0) { 
+                playerHealth = 0;
+
+                document.getElementById("playerHealth").innerHTML = "Player HP: " + playerHealth;
+                document.getElementById("output").innerHTML = "Opponent Wins!"; 
+
+                var headBtn = document.getElementById("head");
+                var tailBtn = document.getElementById("tail");
+                var attackBtn = document.getElementById("attack");
+                var defendBtn = document.getElementById("defend");
+
+                headBtn.disabled = true;
+                tailBtn.disabled = true;
+                attackBtn.disabled = true;
+                defendBtn.disabled = true;
+                p1defeat();
+            }
+            else if(opponentHealth <= 0) {
+                opponentHealth = 0;
+
+                document.getElementById("output").innerHTML = "You Win!";
+                document.getElementById("opponentHealth").innerHTML = "Opponent HP: " + opponentHealth;
+
+                var headBtn = document.getElementById("head");
+                var tailBtn = document.getElementById("tail");
+                var attackBtn = document.getElementById("attack");
+                var defendBtn = document.getElementById("defend");
+
+                headBtn.disabled = true;
+                tailBtn.disabled = true;
+                attackBtn.disabled = true;
+                defendBtn.disabled = true;
+            }
+            else {
+                document.getElementById("playerHealth").innerHTML = "Player HP: " + playerHealth;
+                document.getElementById("opponentHealth").innerHTML = "Opponent HP: " + opponentHealth;
+            }
+        }
+
+        function opponentAction(){
+            opponentChoice = Math.round(Math.random()); 
+            return opponentChoice; 
+        }
+
+        function playerAttack() { //is called when the player clicks the "attack" button
+            var pDamage = calculateDamage(); //calculates the raw damage
+            playerDamage = playerDamage + pDamage; //raw damage + damage caused by the preceding attacks
+            document.getElementById("action1").innerHTML = ("You will attack!");
+            var opponentChoice = opponentAction();     
+
+            if (opponentChoice == 0 ) { //is executed when opponentChoice == 0 or when the opponent attacks
+                var oDamage = calculateDamage(); //calculates the raw damage
+                opponentDamage = opponentDamage + oDamage; //raw damage + damage caused by the preceding attacks
+                document.getElementById("action2").innerHTML = ("Player inflicts "+ pDamage +" damage");
+                document.getElementById("action3").innerHTML = ("Opponent inflicts "+ oDamage +" damage");
+                playerHealth = playerHealth - oDamage;  
+                opponentHealth = opponentHealth - pDamage; 
+            }   
+            else { //is executed when the opponent defends
+                opponentDamage = 0;
+                pDamage = pDamage - 3;
+                if(pDamage > 0) {
+                    opponentHealth = opponentHealth - pDamage; 
+                    document.getElementById("action2").innerHTML = ("Player inflicts "+ pDamage +" damage");
+                }   
+                else {
+                    document.getElementById("action3").innerHTML = ("Opponent has completely blocked you.");
+                }
+            }   
+            checkHealth();
+        }  
+
+        function playerDefend(){ //executes when the player clicks the "defend" button
+            document.getElementById("action1").innerHTML = ("You will defend!");
+            var opponentChoice = opponentAction();  
+            if(opponentChoice == 1) { //executes when the opponent attacks
+                var oDamage = calculateDamage(); 
+                opponentDamage = oDamage - 3;
+                if(opponentDamage > 0){ 
+                    document.getElementById("action2").innerHTML = ("Opponent inflicts "+ oDamage +" damage");
+                    playerHealth = playerHealth - oDamage;
+                }
+                else{
+                    oDamage = 0;
+                    document.getElementById("action2").innerHTML = ("You completely blocked the opponent.");
+                }
+            }
+            else if (opponentChoice == 0){ //attacks when the opponent defends
+                document.getElementById("action2").innerHTML = ("The opponent defended too");
+                document.getElementById("action3").innerHTML = "";
+            }   
+            
+            checkHealth();
+        }
+
+        function reset(){ //resets the game
+            playerHealth = 100;
+            opponentHealth = 100;
+            playerDamage = 0;
+            opponentDamage = 0;
+
+            document.getElementById("playerHealth").innerHTML = "Player HP: " + playerHealth;
+            document.getElementById("opponentHealth").innerHTML = "Opponent HP: " + opponentHealth;
+            
+
+            document.getElementById("actions").innerHTML = " ";
+
+            var headBtn = document.getElementById("head");
+            var tailBtn = document.getElementById("tail");
+            var attackBtn = document.getElementById("attack");
+            var defendBtn = document.getElementById("defend");
+
+            headBtn.disabled = false;
+            tailBtn.disabled = false;
+            attackBtn.disabled = true;
+            defendBtn.disabled = true;
+        }
+
+    </script>
+
+    <link rel="stylesheet" href="style.css">
+</body>
+</html>
